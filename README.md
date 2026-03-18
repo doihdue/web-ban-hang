@@ -111,32 +111,6 @@ Nếu bạn không thấy trang `/login`, kiểm tra file `templates/login.html`
 
 ---
 
-## Kiểm tra lỗi liên quan đến đăng nhập/role
-- Nếu bạn đăng nhập mà ứng dụng chuyển hướng không đúng hoặc không nhận role admin, kiểm tra:
-  - Bảng `role` có bản ghi `admin` không.
-  - Trường `role` của user trong DB có tham chiếu đúng tới role `admin`.
-  - Trong `UserController` phần xử lý login có so sánh `admin` không phân biệt hoa thường.
-
----
-
-## Kiểm tra và xử lý lỗi phổ biến
-1. Kết nối DB (Common):
-   - Lỗi liên quan `Communications link failure` hoặc `Access denied`:
-     - Kiểm tra URL, username, password, và DB có chạy không.
-     - Kiểm tra driver (pom.xml đã có `mysql-connector-j` cho MySQL).
-2. Port đã được sử dụng:
-   - Thay đổi `--server.port` hoặc dừng tiến trình đang chiếm cổng đó.
-3. Lỗi Thymeleaf / template parsing (ví dụ: "Exception evaluating SpringEL expression: "#request.requestURI..."):
-   - Thông báo này có thể xuất hiện khi template cố truy cập các biểu thức tiện ích như `#request`, `#session` mà project chưa phơi sáng các đối tượng đó.
-   - Cách khắc phục an toàn:
-     - Thay vì dùng `#request.requestURI`, truyền giá trị `request.getRequestURI()` vào model trong controller hoặc dùng một `@ControllerAdvice` để thêm biến model chung.
-     - Hoặc điều chỉnh template để dùng các biến đã có sẵn (ví dụ `activeMenu` được truyền từ controller để highlight menu).
-   - Nếu muốn bật expose các đối tượng request/session (không khuyến nghị), hãy tham khảo tài liệu Thymeleaf + Spring Boot; việc này có thể yêu cầu cấu hình bổ sung.
-4. Lỗi 500 / Whitelabel Error Page:
-   - Xem kỹ stacktrace trong console để tìm template/URL gây lỗi; tuyến đường lỗi thường chỉ ra file HTML/fragment có vấn đề.
-
----
-
 ## Gợi ý cấu trúc project & tệp quan trọng
 - `src/main/resources/templates/` – chứa các file Thymeleaf (HTML)
 - `src/main/resources/static/` – chứa CSS, JS, images
@@ -144,16 +118,4 @@ Nếu bạn không thấy trang `/login`, kiểm tra file `templates/login.html`
 - `src/main/resources/application.properties` – cấu hình ứng dụng
 - `pom.xml` – khai báo dependency và plugin
 
----
 
-## Một số mẹo phát triển nhanh
-- Nếu gặp vấn đề menu/fragment: kiểm tra xem `fragments/menu.html` có được include đúng cách và các biến như `activeMenu` có được set trong controller không.
-- Kiểm tra console (IDE hoặc terminal) để đọc stacktrace đầy đủ; phần nguyên nhân thường nằm ở cuối stacktrace.
-
----
-
-Nếu bạn muốn, tôi có thể:
-- Tạo mẫu `application.properties.example` chứa các placeholder an toàn để bạn chỉ việc sửa giá trị.
-- Thêm đoạn `@ControllerAdvice` mẫu để tự động expose một số biến (ví dụ `activeMenu`, `currentUser`) cho tất cả template.
-
-Bạn muốn tôi làm tiếp phần nào? (ví dụ: tạo file example properties, thêm ControllerAdvice, hoặc sửa lỗi mobile menu bạn đang gặp?)
