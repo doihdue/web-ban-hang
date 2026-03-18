@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Admin - Cài đặt website</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/admin-menu.css}" />
+</head>
+<body>
+    <div th:replace="admin/fragments/menu :: adminMenu"></div>
+
+    <div class="main-content">
+      <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h1 class="h3 mb-0"><i class="fas fa-cog me-2"></i>Cài đặt website</h1>
+          <div>
+            <a th:href="@{/admin/dashboard}" class="btn btn-outline-secondary me-2">Quay lại Dashboard</a>
+            <!-- New quick link to the verbose settings form -->
+            <a th:href="@{/admin/settings/form}" class="btn btn-primary">Mở giao diện chỉnh sửa (form)</a>
+          </div>
+        </div>
+
+        <div th:if="${success}" class="alert alert-success">Đã lưu cài đặt thành công.</div>
+
+        <form th:action="@{/admin/settings/save}" method="post" class="mb-4">
+          <div class="card mb-4">
+            <div class="card-header fw-semibold">Thông tin chân trang (Footer)</div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Giới thiệu footer (hỗ trợ HTML)</label>
+                  <textarea name="footerAbout" class="form-control" rows="3" th:text="${settingsMap['footerAbout']}"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Địa chỉ</label>
+                  <input name="contactAddress" class="form-control" th:value="${settingsMap['contactAddress']}"/>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Số điện thoại</label>
+                  <input name="contactPhone" class="form-control" th:value="${settingsMap['contactPhone']}"/>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Email</label>
+                  <input name="contactEmail" class="form-control" th:value="${settingsMap['contactEmail']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Giờ mở cửa</label>
+                  <input name="openingHours" class="form-control" th:value="${settingsMap['openingHours']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Dòng bản quyền</label>
+                  <input name="footerCopyright" class="form-control" th:value="${settingsMap['footerCopyright']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Facebook URL</label>
+                  <input name="facebookUrl" class="form-control" th:value="${settingsMap['facebookUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Instagram URL</label>
+                  <input name="instagramUrl" class="form-control" th:value="${settingsMap['instagramUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">YouTube URL</label>
+                  <input name="youtubeUrl" class="form-control" th:value="${settingsMap['youtubeUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">TikTok URL</label>
+                  <input name="tiktokUrl" class="form-control" th:value="${settingsMap['tiktokUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Messenger URL</label>
+                  <input name="messengerUrl" class="form-control" th:value="${settingsMap['messengerUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Zalo URL</label>
+                  <input name="zaloUrl" class="form-control" th:value="${settingsMap['zaloUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Link Chính sách bảo mật</label>
+                  <input name="privacyUrl" class="form-control" th:value="${settingsMap['privacyUrl']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Link Điều khoản sử dụng</label>
+                  <input name="termsUrl" class="form-control" th:value="${settingsMap['termsUrl']}"/>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Map embed URL (iframe src)</label>
+                  <textarea name="mapEmbedUrl" class="form-control" rows="3" th:text="${settingsMap['mapEmbedUrl']}"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Map external link (maps.google.com)</label>
+                  <input name="mapLink" class="form-control" th:value="${settingsMap['mapLink']}"/>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Chính sách giao hàng (HTML)</label>
+                  <textarea name="shippingPolicyHtml" class="form-control" rows="6" th:text="${settingsMap['shippingPolicyHtml']}"></textarea>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Chế độ Hiển thị Giới thiệu</label>
+                  <div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="aboutMode" id="aboutModeStructured" value="structured" th:checked="${settingsMap['aboutMode']=='structured'}" />
+                      <label class="form-check-label" for="aboutModeStructured">3 mục (ảnh + nội dung)</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="aboutMode" id="aboutModeSingle" value="single" th:checked="${settingsMap['aboutMode']=='single'}" />
+                      <label class="form-check-label" for="aboutModeSingle">Một ô nội dung (HTML)</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Single about editor (shown when aboutMode == 'single') -->
+                <div class="col-12" id="aboutSingleEditor" th:if="${settingsMap['aboutMode']=='single'}">
+                  <label class="form-label">Giới thiệu trang (HTML)</label>
+                  <textarea name="aboutHtml" class="form-control" rows="6" th:text="${settingsMap['aboutHtml']}"></textarea>
+                </div>
+
+                <!-- About sections: 3 rows, each has HTML content and an image path (shown when aboutMode == 'structured') -->
+                <div class="col-12 mt-3" id="aboutStructuredEditor">
+                  <h5>Giới thiệu - Các mục (tối đa 3 mục)</h5>
+                </div>
+
+                <div class="col-md-6 structured-row" id="aboutSection1Editor">
+                  <label class="form-label">Mục 1 - Nội dung (HTML)</label>
+                  <textarea name="aboutSection1Html" class="form-control" rows="4" th:text="${settingsMap['aboutSection1Html']}"></textarea>
+                </div>
+                <div class="col-md-6 structured-row" id="aboutSection1ImageEditor">
+                  <label class="form-label">Mục 1 - Ảnh (đường dẫn)</label>
+                  <input name="aboutSection1Image" class="form-control" th:value="${settingsMap['aboutSection1Image']}" placeholder="ví dụ: /images/gioithieu-1.jpg"/>
+                </div>
+
+                <div class="col-md-6 structured-row" id="aboutSection2Editor">
+                  <label class="form-label">Mục 2 - Nội dung (HTML)</label>
+                  <textarea name="aboutSection2Html" class="form-control" rows="4" th:text="${settingsMap['aboutSection2Html']}"></textarea>
+                </div>
+                <div class="col-md-6 structured-row" id="aboutSection2ImageEditor">
+                  <label class="form-label">Mục 2 - Ảnh (đường dẫn)</label>
+                  <input name="aboutSection2Image" class="form-control" th:value="${settingsMap['aboutSection2Image']}" placeholder="ví dụ: /images/gioithieu-2.jpg"/>
+                </div>
+
+                <div class="col-md-6 structured-row" id="aboutSection3Editor">
+                  <label class="form-label">Mục 3 - Nội dung (HTML)</label>
+                  <textarea name="aboutSection3Html" class="form-control" rows="4" th:text="${settingsMap['aboutSection3Html']}"></textarea>
+                </div>
+                <div class="col-md-6 structured-row" id="aboutSection3ImageEditor">
+                  <label class="form-label">Mục 3 - Ảnh (đường dẫn)</label>
+                  <input name="aboutSection3Image" class="form-control" th:value="${settingsMap['aboutSection3Image']}" placeholder="ví dụ: /images/gioithieu-3.jpg"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header fw-semibold">Banner trang chủ (Hero slider)</div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-12"><h2 class="h6 text-primary mb-0">Slide 1</h2></div>
+                <div class="col-md-6">
+                  <label class="form-label">Ảnh slide 1 (đường dẫn, ví dụ: /images/hat-min.webp)</label>
+                  <input name="homeBanner1Image" class="form-control" th:value="${settingsMap['homeBanner1Image']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tiêu đề 1</label>
+                  <input name="homeBanner1Title" class="form-control" th:value="${settingsMap['homeBanner1Title']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tiêu đề phụ 1</label>
+                  <input name="homeBanner1Subtitle" class="form-control" th:value="${settingsMap['homeBanner1Subtitle']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Dòng mô tả 1</label>
+                  <input name="homeBanner1Line1" class="form-control" th:value="${settingsMap['homeBanner1Line1']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Dòng mô tả 2</label>
+                  <input name="homeBanner1Line2" class="form-control" th:value="${settingsMap['homeBanner1Line2']}"/>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Text nút</label>
+                  <input name="homeBanner1ButtonText" class="form-control" th:value="${settingsMap['homeBanner1ButtonText']}"/>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Link nút</label>
+                  <input name="homeBanner1ButtonLink" class="form-control" th:value="${settingsMap['homeBanner1ButtonLink']}"/>
+                </div>
+
+                <div class="col-12 pt-2"><h2 class="h6 text-primary mb-0">Slide 2</h2></div>
+                <div class="col-md-6">
+                  <label class="form-label">Ảnh slide 2 (đường dẫn, ví dụ: /images/nentraicay.jpg)</label>
+                  <input name="homeBanner2Image" class="form-control" th:value="${settingsMap['homeBanner2Image']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tiêu đề 2</label>
+                  <input name="homeBanner2Title" class="form-control" th:value="${settingsMap['homeBanner2Title']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tiêu đề phụ 2</label>
+                  <input name="homeBanner2Subtitle" class="form-control" th:value="${settingsMap['homeBanner2Subtitle']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Dòng mô tả 1</label>
+                  <input name="homeBanner2Line1" class="form-control" th:value="${settingsMap['homeBanner2Line1']}"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Dòng mô tả 2</label>
+                  <input name="homeBanner2Line2" class="form-control" th:value="${settingsMap['homeBanner2Line2']}"/>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Text nút</label>
+                  <input name="homeBanner2ButtonText" class="form-control" th:value="${settingsMap['homeBanner2ButtonText']}"/>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Link nút</label>
+                  <input name="homeBanner2ButtonLink" class="form-control" th:value="${settingsMap['homeBanner2ButtonLink']}"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header fw-semibold">Cài đặt thanh toán</div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Tên ngân hàng</label>
+                  <input name="paymentBankName" class="form-control" th:value="${settingsMap['paymentBankName']}" placeholder="Ví dụ: Vietcombank"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Số tài khoản</label>
+                  <input name="paymentAccountNumber" class="form-control" th:value="${settingsMap['paymentAccountNumber']}" placeholder="Ví dụ: 1234567890"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Tên chủ tài khoản</label>
+                  <input name="paymentAccountName" class="form-control" th:value="${settingsMap['paymentAccountName']}" placeholder="Ví dụ: CONG TY TNHH DMD"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Mã QR (URL ảnh)</label>
+                  <input name="paymentQrCodeUrl" class="form-control" th:value="${settingsMap['paymentQrCodeUrl']}" placeholder="https://..."/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mb-4">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Lưu tất cả</button>
+          </div>
+        </form>
+
+        <div class="card">
+          <div class="card-header fw-semibold">Nâng cao: key-value tùy chỉnh</div>
+          <div class="card-body">
+            <form th:action="@{/admin/settings/save}" method="post">
+              <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                  <thead><tr><th style="width: 30%">Key</th><th>Value</th></tr></thead>
+                  <tbody>
+                    <tr th:each="s : ${settings}">
+                      <td>
+                        <input type="text" th:value="${s.keyName}" readonly class="form-control-plaintext" />
+                      </td>
+                      <td>
+                        <textarea th:name="${s.keyName}" th:text="${s.value}" class="form-control" rows="2"></textarea>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="row g-3 mt-1">
+                <div class="col-md-4">
+                  <label class="form-label">Thêm key mới</label>
+                  <input name="newKey" class="form-control"/>
+                </div>
+                <div class="col-md-8">
+                  <label class="form-label">Giá trị</label>
+                  <textarea name="newValue" class="form-control" rows="2"></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-outline-primary mt-3">Lưu key-value</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+</body>
+</html>

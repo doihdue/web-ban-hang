@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản Lý Danh Mục</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/admin-menu.css}" />
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .sidebar { background-color: #212529; color: #fff; min-height: 100vh; position: fixed; width: 250px; }
+        .sidebar .nav-link { color: rgba(255,255,255,.75); padding: .75rem 1rem; border-radius: .25rem; margin: .2rem 0; }
+        .sidebar .nav-link:hover { color: #fff; background-color: rgba(255,255,255,.1); }
+        .sidebar .nav-link.active { color: #fff; background-color: #0d6efd; }
+        .sidebar .nav-link i { margin-right: .5rem; }
+        .main-content { margin-left: 250px; padding: 2rem; }
+        .card { box-shadow: 0 .125rem .25rem rgba(0,0,0,.075); margin-bottom: 1.5rem; }
+        @media (max-width: 992px) {
+            .sidebar { width: 100%; position: relative; min-height: auto; }
+            .main-content { margin-left: 0; }
+            .sidebar-nav { display: flex; flex-wrap: wrap; }
+        }
+        .navbar-mobile { display: none; }
+        @media (max-width: 992px) { .navbar-mobile { display: block; } .sidebar { display: none; } }
+    </style>
+</head>
+<body>
+    <div th:replace="admin/fragments/menu :: adminMenu"></div>
+
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h2">Quản Lý Danh Mục</h1>
+                <p class="text-muted">Thêm, sửa, xóa danh mục sản phẩm</p>
+            </div>
+        </div>
+
+        <!-- Thông báo -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="row">
+            <!-- Form thêm danh mục mới -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Thêm Danh Mục Mới</h5>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/category/add}" method="post">
+                            <div class="mb-3">
+                                <label for="categoryName" class="form-label fw-semibold">Tên danh mục</label>
+                                <input type="text" id="categoryName" name="name" class="form-control"
+                                       placeholder="Nhập tên danh mục..." required maxlength="100">
+                                <div class="form-text">Tối đa 100 ký tự.</div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Thêm Danh Mục
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danh sách danh mục -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Danh Sách Danh Mục
+                            <span class="badge bg-secondary ms-2" th:text="${#lists.size(categories)}">0</span>
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width:60px">#</th>
+                                        <th>Tên Danh Mục</th>
+                                        <th style="width:120px" class="text-center">Số Sản Phẩm</th>
+                                        <th style="width:150px" class="text-center">Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:if="${#lists.isEmpty(categories)}">
+                                        <td colspan="4" class="text-center text-muted py-4">
+                                            <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                            Chưa có danh mục nào
+                                        </td>
+                                    </tr>
+                                    <tr th:each="cat, stat : ${categories}">
+                                        <td class="align-middle" th:text="${stat.index + 1}"></td>
+                                        <td class="align-middle">
+                                            <i class="fas fa-tag text-primary me-2"></i>
+                                            <span th:text="${cat.name}" class="fw-semibold"></span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <span class="badge bg-info text-dark"
+                                                  th:text="${cat.products != null ? #lists.size(cat.products) : 0} + ' sản phẩm'"></span>
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <!-- Nút sửa -->
+                                            <button class="btn btn-sm btn-outline-warning me-1"
+                                                    data-bs-toggle="modal"
+                                                    th:data-bs-target="'#editModal' + ${cat.id}"
+                                                    title="Sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <!-- Nút xóa -->
+                                            <button class="btn btn-sm btn-outline-danger"
+                                                    data-bs-toggle="modal"
+                                                    th:data-bs-target="'#deleteModal' + ${cat.id}"
+                                                    title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal sửa - tạo riêng cho từng danh mục -->
+    <div th:each="cat : ${categories}">
+        <div class="modal fade" th:id="'editModal' + ${cat.id}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/admin/category/edit/{id}(id=${cat.id})}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Sửa Danh Mục</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Tên danh mục</label>
+                                <input type="text" name="name" class="form-control"
+                                       th:value="${cat.name}" required maxlength="100">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-warning"><i class="fas fa-save me-1"></i>Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xóa -->
+        <div class="modal fade" th:id="'deleteModal' + ${cat.id}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger"><i class="fas fa-trash me-2"></i>Xóa Danh Mục</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn xóa danh mục <strong th:text="${cat.name}"></strong>?</p>
+                        <p class="text-danger small"><i class="fas fa-exclamation-triangle me-1"></i>
+                            Không thể xóa danh mục đang có sản phẩm.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <form th:action="@{/admin/category/delete/{id}(id=${cat.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-1"></i>Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
