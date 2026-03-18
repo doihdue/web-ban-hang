@@ -119,3 +119,110 @@ Nếu bạn không thấy trang `/login`, kiểm tra file `templates/login.html`
 - `pom.xml` – khai báo dependency và plugin
 
 
+# 👤 Chức năng Khách hàng (User)
+
+## 1. 📄 Trang tĩnh & thông tin (Công khai)
+
+* Trang chủ
+* Giới thiệu
+* Liên hệ
+* Chính sách giao hàng
+
+## 2. 🔍 Duyệt & tìm kiếm sản phẩm (Công khai)
+
+* Xem danh sách sản phẩm
+* Tìm kiếm sản phẩm 
+* Lọc sản phẩm theo tiêu chí
+* Phân trang
+
+## 3. 📦 Chi tiết sản phẩm & tương tác (Công khai)
+
+* Xem chi tiết sản phẩm
+* Xem sản phẩm liên quan
+* Xem / đọc đánh giá
+
+## 4. ⭐ Tương tác đánh giá
+
+* Thêm / ghi nhận đánh giá sản phẩm *(yêu cầu đăng nhập)*
+
+## 5. 🛒 Giỏ hàng (Yêu cầu đăng nhập)
+
+* Thêm sản phẩm vào giỏ
+* Xem giỏ hàng
+* Cập nhật số lượng
+* Xóa sản phẩm khỏi giỏ
+
+## 6. 💳 Thanh toán & đơn hàng (Yêu cầu đăng nhập)
+
+* Checkout / Đặt hàng
+* Hiển thị phương thức thanh toán (QR / Bank)
+* Xác nhận thanh toán
+* Hủy thanh toán
+* Trang xác nhận đơn hàng
+* Xem lịch sử và chi tiết đơn hàng
+
+## 7. 🔐 Tài khoản & bảo mật
+
+* Đăng ký
+* Đăng nhập / Logout
+* Quên mật khẩu (gửi email)
+* Reset mật khẩu bằng token
+
+  * Form: công khai
+  * Thay đổi mật khẩu: yêu cầu xác thực
+
+## 8. 👤 Hồ sơ & địa chỉ (Yêu cầu đăng nhập)
+
+* Xem / cập nhật thông tin cá nhân
+* Đổi mật khẩu
+* Quản lý địa chỉ giao hàng:
+
+  * Thêm
+  * Xóa
+  * Đặt mặc định
+
+# 🛠️ Chức năng Quản trị (Admin)
+
+## 1. 📊 Dashboard & Thống kê
+
+* Thống kê sản phẩm
+* Thống kê đơn hàng
+* Quản lý tồn kho
+* Sản phẩm giảm giá
+* Sản phẩm mới
+
+## 2. 📦 Quản lý sản phẩm
+
+* Thêm / Sửa / Xóa sản phẩm
+* Danh sách sản phẩm
+* Upload & quản lý ảnh sản phẩm
+* Xem chi tiết sản phẩm
+
+## 3. 🗂️ Quản lý danh mục
+
+* Thêm / Sửa / Xóa danh mục
+
+## 4. 📑 Quản lý đơn hàng
+
+* Danh sách đơn hàng
+* Xem chi tiết đơn hàng
+* Cập nhật trạng thái đơn
+
+## 5. 👥 Quản lý khách hàng
+
+* Danh sách khách hàng
+* Xem chi tiết khách hàng
+* Vô hiệu hóa tài khoản
+
+## 6. 🧩 Quản lý nội dung website
+
+* Quản lý nội dung trang chủ (home sections / feature boxes)
+* Cập nhật nội dung tĩnh:
+
+  * Giới thiệu
+  * Chính sách giao hàng
+* Cấu hình hệ thống (Site settings)
+
+
+
+
